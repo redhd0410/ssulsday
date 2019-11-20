@@ -1,0 +1,60 @@
+package kr.cubex.utils;
+
+import java.lang.reflect.Array;
+import java.util.List;
+import java.util.Map;
+
+public class MybatisUtil {
+
+	/**
+	 * Object type 변수가 비어있는지 여부를 검사
+	 * 
+	 * @param obj 
+	 * @return Boolean : true / false
+	 * 
+	 * 예제: <if test="@kr.cubex.utils.MybatisUtil@isEmpty(str)">
+	 */
+	public static boolean isEmpty(Object obj) {
+		if (obj == null) {
+			return true;
+		}
+		if (obj instanceof String) 		return ((String) obj).isEmpty();
+		else if (obj instanceof List) 	return ((List<?>) obj).isEmpty();
+		else if (obj instanceof Map) 	return ((Map<?, ?>) obj).isEmpty();
+		else if (obj instanceof Object[]) return Array.getLength(obj) == 0;
+		
+		return false;
+	}
+
+	/**
+	 * Object type 스트링변수가 비어있는지 여부를 검사
+	 * 
+	 * @param obj 
+	 * @return Boolean : true / false
+	 */
+	public static boolean isStrEmpty(Object obj) {
+		if (obj == null) {
+			return true;
+		}
+		if (obj instanceof String) {
+			return ((String) obj).isEmpty();
+		}
+		return false;
+	}
+
+	/**
+	 * Object type 스트링변수가 비어있는지 여부를 검사 (trim 체크함)
+	 * 
+	 * @param obj 
+	 * @return Boolean : true / false
+	 */
+	public static boolean isEmptyST(Object obj) {
+		if (obj == null) {
+			return true;
+		}
+		if (obj instanceof String) {
+			return obj.toString().trim().isEmpty();
+		}
+		return false;
+	}
+}

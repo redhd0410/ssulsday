@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ssulsday.cms.mapper.LoginMapper">
+
+	<select id="selectUserLogin" parameterType="loginVO" resultType="userInfoVO">
+		SELECT
+			*
+		FROM 
+			TBL_USER_INFO
+		WHERE
+			USER_ID = #{login_id}
+	</select>
+
+</mapper>

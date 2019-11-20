@@ -1,0 +1,102 @@
+﻿package kr.cubex.data;
+
+import kr.cubex.utils.ComStr;
+
+public class BaseCode {
+	private	String[]		m_saKey;
+	private	String[]		m_saText;
+	private String			m_sObjId;
+
+	public BaseCode(String[] saKey, String[] saText, String sObjId) {
+		m_saKey 	= saKey;
+		m_saText	= saText;
+		m_sObjId	= sObjId;
+	}
+
+	public String makeCombo(String sObjId, String sFirstText, String sDefKey) {
+		return makeCombo(sObjId, sFirstText, sDefKey, null, null, null);
+	}
+	public String makeCombo(String sObjId, String sFirstText, String sDefKey, String sClass, String sStyle) {
+		return makeCombo(sObjId, sFirstText, sDefKey, null, sClass, sStyle);
+	}
+	public String makeCombo(String sObjId, String sFirstText, String sDefKey, String sOnChgEvt, String sClass, String sStyle) {
+		String		sDispText = "";
+		if (ComStr.isEmpty(sOnChgEvt)) {
+			sDispText	+= "<select id=\"" + sObjId + "\" name=\"" + sObjId + "\" ";
+		}
+		else {
+			sDispText	+= "<select id=\"" + sObjId + "\" name=\"" + sObjId + "\" onchange=\"" + sOnChgEvt + "\" ";
+		}
+		if (ComStr.isEmpty(sClass) == false) {
+			sDispText	+= "class=\"" + sClass + "\""; 
+		}
+		if (ComStr.isEmpty(sStyle) == false) {
+			sDispText	+= "style=\"" + sStyle + "\""; 
+		}
+		sDispText	+= " >";
+
+		if (sFirstText.length() > 0) {
+			sDispText	+= "<option value=\"\">" + sFirstText + "</option>";
+		}
+		for (int i = 0; i < m_saKey.length; i ++) {
+			if (m_saKey[i].equals(sDefKey))
+				sDispText	+= "<option value=\"" + m_saKey[i] + "\" selected>" + m_saText[i] + "</option>";
+			else
+				sDispText	+= "<option value=\"" + m_saKey[i] + "\">" + m_saText[i] + "</option>";
+		}
+  		sDispText	+= "</select>";
+		return sDispText;
+	}
+	public String makeCombo(String sFirstText, String sDefKey) {
+		return makeCombo(m_sObjId, sFirstText, sDefKey);
+	}
+	public String makeCombo(String sDefKey) {
+		return makeCombo(m_sObjId, "", sDefKey);
+	}
+
+	/*
+	 * <input type="radio" id="msg_stype_1" name="msg_send_type" value="1" >
+	 * <label for="msg_stype_1">예약발송</label>&nbsp;&nbsp;
+	 */
+	public String makeRadio(String sObjId, String sDefKey, String sEvtClick) {
+		String		sDispText = "";
+		String		sOnClick = "";
+
+		if (sEvtClick.length() > 0)
+			sOnClick = "onclick=\"" + sEvtClick + "\"";
+		for (int i = 0; i < m_saKey.length; i ++) {
+			String		sChecked = "";
+			String		sObjLabel;
+			if (m_saKey[i].equals(sDefKey))
+				sChecked = "checked";
+
+			sObjLabel = sObjId + "_" + i;
+			sDispText	+= "<input type=\"radio\" id=\"" + sObjLabel + "\" name=\"" + sObjId + "\" value=\"" + m_saKey[i] + "\" " + sChecked + " " + sOnClick + " />";
+			sDispText	+= "<label for=\"" + sObjLabel + "\">" + m_saText[i] + "</label>&nbsp;&nbsp;";
+		}
+
+		return sDispText;
+	}
+	public String makeRadio(String sObjId, String sDefKey) {
+		return makeRadio(sObjId, sDefKey, "");
+	}
+	public String makeRadio(String sDefKey) {
+		return makeRadio(m_sObjId, sDefKey, "");
+	}
+	public String makeRadioEx(String sDefKey, String sEvtClick) {
+		return makeRadio(m_sObjId, sDefKey, sEvtClick);
+	}
+
+	//
+	public String getCodeText(String sKey) {
+		String	sText = "";
+		for (int i = 0; i < m_saKey.length; i ++) {
+			if (m_saKey[i].equals(sKey))
+				sText = m_saText[i];
+		}
+		return sText;
+	}
+	public String getCodeText(int nKey) {
+		return getCodeText(Integer.toString(nKey));
+	}
+}

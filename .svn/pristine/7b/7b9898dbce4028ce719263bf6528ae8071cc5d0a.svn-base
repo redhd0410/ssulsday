@@ -1,0 +1,53 @@
+package kr.cubex.data;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import kr.cubex.utils.ComStr;
+
+
+
+public class CmHashMap extends HashMap<String, Object> {
+
+	private static final long serialVersionUID = 3268099733958787663L;
+
+	public CmHashMap() { }
+	public CmHashMap(Map<String, Object> map) {
+		setData(map);
+	}
+
+	/**
+	 * key 에 대하여 lower Case 변환하여 super.put
+	 * (ListOrderedMap) 을 호출한다.
+	 * @param key
+	 * @param value
+	 *        - 명시된 key 에 대한 값 (변경 없음)
+	 * @return previous value associated with specified
+	 *         key, or null if there was no mapping for
+	 *         key
+	 */
+	@Override
+	public Object put(String key, Object value) {
+		return super.put(key, value);
+	}
+
+	public String getStr(String key) {
+		return ComStr.toStr(get(key));
+	}
+	public int getInt(String key) {
+		return ComStr.toInt(get(key));
+	}
+
+	//
+	public void setData(Map<String, Object> map) {
+		if (map == null) return;
+		Set<String>			keySet = map.keySet();
+		Iterator<String>	iter = keySet.iterator();
+		while ( iter.hasNext() ) {
+			String	key = iter.next();
+			put(key, map.get(key));
+		}
+	}
+}

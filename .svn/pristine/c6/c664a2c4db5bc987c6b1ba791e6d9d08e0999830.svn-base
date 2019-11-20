@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.ssulsday.cms.mapper.PostInfoMapper">
+
+   <insert id="insertData" parameterType="searchVO">
+      <![CDATA[
+      INSERT INTO TBL_POST_INFO(post_title, post_content, user_id, category_id,
+      latitude, longitude)
+      VALUES (#{post_title}, #{post_content}, #{user_id}, #{category_id},
+      #{latitude}, #{longitude})
+      ]]>
+   </insert>
+
+   <update id="updateData" parameterType="postInfoVO">
+      UPDATE TBL_POST_INFO SET 
+      POST_TITLE=#{post_title},
+      POST_CONTENT=#{post_content}, 
+      TIME_CREATED=CURRENT_TIMESTAMP
+      WHERE POST_ID=#{post_id}
+   </update>
+   
+   <update id="updateViewCount" parameterType="postInfoVO">
+      UPDATE TBL_POST_INFO SET 
+      viewcount = viewcount + 1
+      WHERE POST_ID=#{post_id}
+   </update>
+
+   <update id="updateCount">
+      UPDATE TBL_POST_INFO SET 
+      <choose>
+      	<when test='flag.equals("L")'>
+      		likecount = #{count}
+      	</when>
+      	<when test='flag.equals("C")'>
+      		commentcount = #{count}
+      	</when>
+      </choose>
+      WHERE POST_ID=#{post_id}
+   </update>
+
+   <delete id="deleteData" parameterType="postInfoVO">
+      DELETE FROM TBL_POST_INFO WHERE post_id=#{post_id}
+   </delete>
+
+	<select id="selectListData" parameterType="searchVO"
+      resultType="postInfoVO">
+      SELECT * 
+      FROM TBL_POST_INFO
+      WHERE
+      1=1
+         <if test="searchKeyword != ''">
+         AND   POST_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+         </if> 
+      ORDER BY 
+      	 <choose>
+      	 	<when test="searchCondition == '' or searchCondition == 'isNew'">
+      	 		TIME_CREATED DESC
+      	 	</when>
+      	 	<when test="searchCondition == 'isLike'">
+      	 		LIKECOUNT DESC
+      	 	</when>
+      	 	<when test="searchCondition == 'isView'">
+      	 		VIEWCOUNT DESC
+      	 	</when>
+      	 	<when test="searchCondition == 'isComment'">
+      	 		COMMENTCOUNT DESC
+      	 	</when>
+      	 </choose>
+   </select>
+
+   <select id="selectListCount" parameterType="searchVO"
+      resultType="int">
+      SELECT COUNT(*) AS TOTCNT 
+      FROM TBL_POST_INFO
+      WHERE
+      1=1
+      <if test="searchKeyword != ''">
+         AND POST_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+      </if>
+   </select>
+   
+   <select id="selectData" resultType="postInfoVO">
+      SELECT POST_ID,POST_TITLE, POST_CONTENT, CATEGORY_ID, TIME_CREATED, LATITUDE, LONGITUDE, VIEWCOUNT, LIKECOUNT, COMMENTCOUNT
+      FROM TBL_POST_INFO
+      WHERE TBL_POST_INFO.POST_ID= #{post_id}
+      LIMIT 1
+   </select>
+
+</mapper>

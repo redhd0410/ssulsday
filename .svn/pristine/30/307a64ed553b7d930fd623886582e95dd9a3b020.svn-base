@@ -1,0 +1,55 @@
+package kr.ssulsday.cms.service.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import kr.cubex.comm.vo.PagingListVO;
+import kr.cubex.comm.vo.SearchPageVO;
+import kr.ssulsday.cms.mapper.HashtagInfoMapper;
+import kr.ssulsday.cms.service.HashtagInfoService;
+import kr.ssulsday.cms.vo.CommentInfoVO;
+import kr.ssulsday.cms.vo.HashtagInfoVO;
+
+@Service
+public class HastagInfoServiceImpl implements HashtagInfoService {
+
+	// private static final Logger logger = LoggerFactory.getLogger(AdminInfoServiceImpl1.class);
+
+	@Resource
+	private HashtagInfoMapper hashtagInfoMapper;
+
+	@Override
+	public void insertData(HashtagInfoVO vo) throws Exception {
+		hashtagInfoMapper.insertData(vo);
+	}
+	
+	@Override
+	public void insertUpdateData(HashtagInfoVO vo) throws Exception {
+		hashtagInfoMapper.insertUpdateData(vo);
+	}
+
+	@Override
+	public void updateData(HashtagInfoVO vo) throws Exception {
+		hashtagInfoMapper.updateData(vo);
+	}
+
+	@Override
+	public List<HashtagInfoVO> selectListData(int post_id) throws Exception {
+		return hashtagInfoMapper.selectListData(post_id);
+	}
+
+	@Override
+	public int selectListCount(int post_id) throws Exception {
+		return hashtagInfoMapper.selectListCount(post_id);
+	}
+
+	@Override
+	public void deleteData(int post_id) throws Exception {
+		hashtagInfoMapper.deleteData(post_id);
+	}
+
+}

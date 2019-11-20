@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ssulsday.cms.mapper.ActivityInfoMapper">
+	<!--내가 작성한 글 -->
+	<select id="selectcontentListData" parameterType="searchVO"
+		resultType="cardInfoVO">
+		SELECT *
+		FROM TBL_CARD_INFO
+		WHERE
+		 1=1
+		<if test="searchKeyword != ''">
+			AND USER_ID = #{searchKeyword}
+		</if>
+		ORDER
+		BY TIME_CREATED DESC
+	</select>
+	<select id="selectcontentListCount" parameterType="searchVO"
+		resultType="int">
+		SELECT
+		COUNT(*) AS TOTCNT
+		FROM TBL_CARD_INFO
+		WHERE
+		1=1
+		<if test="searchKeyword != ''">
+			AND USER_ID = #{searchKeyword}
+		</if>
+	</select>
+	<!--내가 쓴 댓글 -->
+	<select id="selectcommentListData" parameterType="searchVO"
+		resultType="cardInfoVO">
+		SELECT
+		TBL_CARD_INFO.card_title, TBL_CARD_INFO.post_id, TBL_CARD_INFO.user_id,TBL_CARD_INFO.card_content,TBL_CARD_INFO.longitude,TBL_CARD_INFO.latitude,TBL_CARD_INFO.time_created,TBL_CARD_INFO.viewcount,TBL_CARD_INFO.viewcount
+		FROM TBL_CARD_INFO LEFT JOIN TBL_COMMENT_INFO ON TBL_CARD_INFO.POST_ID
+		= TBL_COMMENT_INFO.POST_ID
+		WHERE TBL_COMMENT_INFO.user_id = #{searchKeyword}
+		ORDER BY TIME_CREATED DESC
+	</select>
+	<select id="selectcommentListCount" parameterType="searchVO"
+		resultType="int">
+		SELECT
+		COUNT(*) AS TOTCNT
+		FROM TBL_CARD_INFO LEFT JOIN
+		TBL_COMMENT_INFO ON TBL_CARD_INFO.POST_ID = TBL_COMMENT_INFO.POST_ID
+		WHERE TBL_COMMENT_INFO.user_id = #{searchKeyword}
+	</select>
+	<!--내가 좋아요 한글 -->
+	<select id="selectlikeListData" parameterType="searchVO"
+		resultType="cardInfoVO">
+		SELECT
+		TBL_CARD_INFO.card_title,TBL_CARD_INFO.user_id,TBL_CARD_INFO.card_content,TBL_CARD_INFO.longitude,TBL_CARD_INFO.latitude,TBL_CARD_INFO.time_created,TBL_CARD_INFO.viewcount,TBL_CARD_INFO.viewcount
+		FROM TBL_CARD_INFO LEFT JOIN TBL_LIKE_INFO ON TBL_CARD_INFO.POST_ID
+		=
+		TBL_LIKE_INFO.POST_ID
+		WHERE TBL_LIKE_INFO.user_id = #{searchKeyword}
+		ORDER BY
+		TIME_CREATED DESC
+	</select>
+	<select id="selectlikeListCount" parameterType="searchVO"
+		resultType="int">
+		SELECT
+		COUNT(*) AS TOTCNT
+		FROM TBL_CARD_INFO LEFT JOIN
+		TBL_LIKE_INFO ON TBL_CARD_INFO.POST_ID
+		= TBL_LIKE_INFO.POST_ID
+		WHERE
+		TBL_LIKE_INFO.user_id = #{searchKeyword}
+		ORDER BY TIME_CREATED DESC
+	</select>
+</mapper>

@@ -1,0 +1,9 @@
+package kr.ssulsday.cms.service;
+
+import kr.ssulsday.cms.vo.UserInfoVO;
+import kr.ssulsday.cms.vo.LoginVO;
+
+public interface LoginService {
+
+	UserInfoVO selectUserLogin(LoginVO vo) throws Exception;
+}

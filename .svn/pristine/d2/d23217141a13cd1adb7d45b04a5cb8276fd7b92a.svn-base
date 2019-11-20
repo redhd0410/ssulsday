@@ -1,0 +1,34 @@
+package kr.ssulsday.cms.vo;
+
+import kr.cubex.utils.ComCrypto;
+import kr.cubex.utils.ComStr;
+
+public class UserInfoVO {
+
+	private String	user_id;
+	private String	user_pwd;
+	private String 	username;
+
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	public String getUser_pwd() {
+		return user_pwd;
+	}
+	public void setUser_pwd(String user_pwd) {
+		this.user_pwd = user_pwd;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public boolean isUserAuth(String sInPass) {
+		return ComCrypto.matches(sInPass, this.user_pwd);
+		// return sPass.equals(this.admin_pwd);
+	}	
+}

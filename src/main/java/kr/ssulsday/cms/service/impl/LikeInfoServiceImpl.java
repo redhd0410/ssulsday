@@ -1,0 +1,91 @@
+/*
+ * Copyright 2008-2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package kr.ssulsday.cms.service.impl;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import kr.cubex.comm.vo.PagingListVO;
+import kr.cubex.comm.vo.SearchPageVO;
+import kr.ssulsday.cms.mapper.LikeInfoMapper;
+import kr.ssulsday.cms.service.LikeInfoService;
+import kr.ssulsday.cms.vo.LikeInfoVO;
+
+
+
+@Service
+public class LikeInfoServiceImpl extends EgovAbstractServiceImpl implements LikeInfoService {
+
+	 private static final Logger logger = LoggerFactory.getLogger(LikeInfoServiceImpl.class);
+
+	@Resource
+	private LikeInfoMapper likeInfoMapper;
+
+	@Override
+	public void insertData(LikeInfoVO vo) throws Exception {
+		logger.info("여기까지 왓나요?");
+		likeInfoMapper.insertData(vo);
+	}
+
+	@Override
+	public int updateData(LikeInfoVO vo) throws Exception {
+		return likeInfoMapper.updateData(vo);
+	}
+
+	@Override
+	public int deleteData(LikeInfoVO vo) throws Exception {
+		return likeInfoMapper.deleteData(vo);
+	}
+
+	@Override
+	public LikeInfoVO selectData(LikeInfoVO vo) throws Exception {
+		return likeInfoMapper.selectData(vo);
+	}
+
+	@Override
+	public List<?> selectListData(SearchPageVO vo) throws Exception {
+		return likeInfoMapper.selectListData(vo);
+	}
+
+	@Override
+	public int selectListCount(SearchPageVO vo) {
+		return likeInfoMapper.selectListCount(vo);
+	}
+
+	@Override
+	public PagingListVO selectListPage(SearchPageVO vo) throws Exception {
+		PagingListVO	lstPageData	= new PagingListVO(vo);
+		
+		List<?> list	= selectListData(vo);
+		int totCnt		= selectListCount(vo);
+		
+		lstPageData.setTotalCount(totCnt);
+		lstPageData.setItems(list);
+		
+		return lstPageData;
+	}
+
+	@Override
+	public int selectDataCount(LikeInfoVO likevo) {
+		return likeInfoMapper.selectDataCount(likevo);
+	}
+}

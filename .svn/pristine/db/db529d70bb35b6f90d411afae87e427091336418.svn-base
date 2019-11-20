@@ -1,0 +1,24 @@
+package kr.ssulsday.cms.service;
+
+import java.util.List;
+
+import kr.cubex.comm.vo.PagingListVO;
+import kr.cubex.comm.vo.SearchPageVO;
+import kr.cubex.comm.web.CmBaseService;
+import kr.ssulsday.cms.vo.PostInfoVO;
+
+public interface PostInfoService extends CmBaseService<PostInfoVO, SearchPageVO>{
+
+	
+	
+	/**
+     * 데이터 리스트 및 페이징정보 반환
+     */
+	
+	PagingListVO selectListPage(SearchPageVO vo) throws Exception;
+	
+	public int updateViewCount(PostInfoVO vo) throws Exception;
+	
+	public int updateLikeCount(int post_id) throws Exception;
+	
+}

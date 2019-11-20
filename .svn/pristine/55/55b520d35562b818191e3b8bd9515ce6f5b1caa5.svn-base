@@ -1,0 +1,110 @@
+package kr.cubex.utils;
+
+
+import java.io.UnsupportedEncodingException;
+import java.security.spec.AlgorithmParameterSpec;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public abstract class CryptoBase {
+	//
+	protected static final String			DEF_CHARSET				= "UTF-8";
+	protected static final String 			DEF_cipher_Algorithm 	= "AES";
+
+	//
+	protected abstract byte[] getIvData();
+	protected abstract byte[] generateKey();
+
+	//
+	public byte[] encryptData(byte[] srcData)
+	{
+		byte[] 		byEncrypted = null;
+
+		try {
+			SecretKeySpec 			keySpec = new SecretKeySpec(generateKey(), DEF_cipher_Algorithm);
+			AlgorithmParameterSpec 	ivParam = new IvParameterSpec(getIvData());
+			Cipher 			cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+			cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParam);
+
+			byEncrypted = cipher.doFinal(srcData);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return byEncrypted;
+	}
+	public byte[] decryptData(byte[] byEncData)
+	{
+		byte[] 		byDecrypted = null;
+
+		try {
+			SecretKeySpec 			keySpec = new SecretKeySpec(generateKey(), DEF_cipher_Algorithm);
+			AlgorithmParameterSpec 	ivParam = new IvParameterSpec(getIvData());
+			Cipher 			cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+			cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParam);
+
+			byDecrypted = cipher.doFinal(byEncData);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return byDecrypted;
+	}
+	static final String 		DEF_crypto_dbkey 		= "~~";
+
+	//
+	public String encryptString(String sSrcData)
+	{
+		String 		sEncrypted = "";
+		byte[] 		srcData = null;
+		
+		if (sSrcData == null || sSrcData.length() <= 0)
+			return sEncrypted;
+
+		try {
+			byte[] 		encBytes;
+
+			srcData = sSrcData.getBytes(DEF_CHARSET);
+			encBytes = encryptData(srcData);
+			
+			if (encBytes != null)
+				sEncrypted = HexUtils.encodeHexString(encBytes);
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return sEncrypted;
+	}
+	//
+	public String decryptString(String sEncData)
+	{
+		String 		sDecrypted = "";
+
+		if (sEncData == null || sEncData.length() <= 0)
+			return sDecrypted;
+
+		try {
+			byte[] 		decBytes;
+			byte[] 		encVal;
+			
+			encVal = HexUtils.decodeHexString(sEncData);
+			decBytes = decryptData(encVal);
+
+			if (decBytes != null)
+				sDecrypted = new String(decBytes, DEF_CHARSET);
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return sDecrypted;
+	}
+
+}

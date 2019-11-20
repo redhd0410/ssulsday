@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ssulsday.cms.mapper.HashtagInfoMapper">
+
+<insert id="insertData" parameterType="String">
+		<![CDATA[
+		INSERT INTO TBL_HASHTAG_INFO(post_id, hashtag)
+		VALUES ((SELECT post_id FROM TBL_POST_INFO ORDER BY post_id DESC LIMIT 1), #{hashtag})
+		]]>
+	</insert>
+	
+	<insert id="insertUpdateData" parameterType="HashtagInfoVO">
+		<![CDATA[
+		INSERT INTO TBL_HASHTAG_INFO(post_id, hashtag)
+		VALUES (#{post_id}, #{hashtag})
+		]]>
+	</insert>
+
+	<update id="updateData" parameterType="hashtagInfoVO">
+		UPDATE TBL_HASHTAG_INFO SET 
+		HASHTAG=#{hashtag}
+		WHERE POST_ID=#{post_id}
+	</update>
+
+	<delete id="deleteData" parameterType="hashtagInfoVO">
+		DELETE FROM TBL_HASHTAG_INFO WHERE post_id=#{post_id}
+	</delete>
+
+	<select id="selectListData" parameterType="int"
+		resultType="hashtagInfoVO">
+		SELECT HASHTAG FROM TBL_HASHTAG_INFO
+		WHERE POST_ID=#{post_id}
+	</select>
+
+	<select id="selectListCount" parameterType="int"
+		resultType="int">
+		SELECT COUNT(*) AS TOTCNT FROM TBL_HASHTAG_INFO
+	</select>
+	
+</mapper>

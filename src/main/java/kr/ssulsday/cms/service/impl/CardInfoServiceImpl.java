@@ -1,0 +1,103 @@
+/*
+ * Copyright 2008-2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package kr.ssulsday.cms.service.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import kr.cubex.comm.vo.PagingListVO;
+import kr.cubex.comm.vo.SearchPageVO;
+import kr.ssulsday.cms.mapper.CardInfoMapper;
+import kr.ssulsday.cms.service.CardInfoService;
+import kr.ssulsday.cms.vo.CardInfoVO;
+
+
+
+@Service
+public class CardInfoServiceImpl extends EgovAbstractServiceImpl implements CardInfoService {
+
+	// private static final Logger logger = LoggerFactory.getLogger(AdminInfoServiceImpl1.class);
+
+	@Resource
+	private CardInfoMapper cardInfoMapper;
+
+	@Override
+	public void insertData(CardInfoVO vo) throws Exception {
+		cardInfoMapper.insertData(vo);
+	}
+
+	@Override
+	public int updateData(CardInfoVO vo) throws Exception {
+		return cardInfoMapper.updateData(vo);
+	}
+
+	@Override
+	public int deleteData(CardInfoVO vo) throws Exception {
+		return cardInfoMapper.deleteData(vo);
+	}
+
+	@Override
+	public CardInfoVO selectData(CardInfoVO vo) throws Exception {
+		return cardInfoMapper.selectData(vo);
+	}
+
+	@Override
+	public List<?> selectListData(SearchPageVO vo) throws Exception {
+		return cardInfoMapper.selectListData(vo);
+	}
+
+	@Override
+	public int selectListCount(SearchPageVO vo) {
+		return cardInfoMapper.selectListCount(vo);
+	}
+
+	@Override
+	public PagingListVO selectListPage(SearchPageVO vo) throws Exception {
+		PagingListVO	lstPageData	= new PagingListVO(vo);
+		
+		List<?> list	= selectListData(vo);
+		int totCnt		= selectListCount(vo);
+		
+		lstPageData.setTotalCount(totCnt);
+		lstPageData.setItems(list);
+		
+		return lstPageData;
+	}
+
+	@Override
+	public int updateViewCount(CardInfoVO cardvo) {
+		return cardInfoMapper.updateViewCount(cardvo);
+	}
+
+	@Override
+	public int updateCount(int post_id, int count, String flag) throws Exception {
+		return cardInfoMapper.updateCount(post_id, count, flag);
+	}
+
+	@Override
+	public List<?> selectListDataByRange(double latitude, double longitude) throws Exception {
+		return cardInfoMapper.selectListDataByRange(latitude, longitude);
+	}
+
+	@Override
+	public CardInfoVO selectData(int post_id) {
+		return cardInfoMapper.selectData(post_id);
+	}
+}

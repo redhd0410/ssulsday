@@ -1,0 +1,92 @@
+package kr.cubex.utils;
+
+import java.io.UnsupportedEncodingException;
+
+
+public class CryptoDB extends CryptoBase {
+	//
+	// private static final String 		DEF_crypto_128 			= "1234567890123456";
+	// private static final String 		DEF_crypto_256 			= "12345678901234567890123456789012";
+	//
+	private static byte[]				s_cryptoKey				= null;
+	private static byte[] 				s_ivKey = new byte[] { 
+		(byte)0x91, 0x27, 0x25, 0x38, 0x5f, 0x29, 0x25, 0x7f, 
+		(byte)0xe1, 0x02, 0x23, 0x7c, 0x25, 0x79, 0x23, 0x5d 
+	};
+
+	//
+	@Override
+	protected byte[] getIvData() {
+		return s_ivKey;
+	}
+	@Override
+	protected byte[] generateKey() {
+		return generateKey16(DEF_crypto_dbkey);
+	}
+	//
+	private static byte[] generateKey16(String key)
+	{
+		if (s_cryptoKey != null)
+			return s_cryptoKey;
+
+		s_cryptoKey = new byte[16];
+
+		byte[] 	byKey = null;
+		try {
+			byKey = key.getBytes(DEF_CHARSET);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		if (byKey.length < s_cryptoKey.length)
+		{
+			System.arraycopy(byKey, 0, s_cryptoKey, 0, byKey.length);
+
+			for (int i = byKey.length; i < s_cryptoKey.length; i++)
+				s_cryptoKey[i] = 0;
+		}
+		else {
+			System.arraycopy(byKey, 0, s_cryptoKey, 0, s_cryptoKey.length);
+		}
+
+		return s_cryptoKey;
+	}
+
+	private	static CryptoDB		s_cryptoDB = new CryptoDB();
+	//
+	public static String encode(String sSrcData) {
+		if (sSrcData == null || sSrcData.length() <= 0)
+			return "";
+		return s_cryptoDB.encryptString(sSrcData);
+	}
+	public static String encode(Object srcData) {
+		if (srcData instanceof String) {
+			return encode((String) srcData);
+		}
+		return encode(ComStr.toStr(srcData));
+	}
+	public static String decode(String sEncData) {
+		if (sEncData == null || sEncData.length() <= 0)
+			return "";
+		return s_cryptoDB.decryptString(sEncData);
+	}
+	public static String decode(Object encData) {
+		if (encData instanceof String) {
+			return decode((String) encData);
+		}
+		return decode(ComStr.toStr(encData));
+	}
+
+	public static void main(String[] args) {
+		String		sMyKey = "aaaa@naver.com";
+		String		sEncResult;
+		System.out.println(CryptoDB.encode(sMyKey));
+		sEncResult = CryptoDB.encode(System.currentTimeMillis() + "-" + sMyKey);
+		System.out.println("Encode Result: " + sEncResult);
+		
+		String		sEncData = sEncResult;
+		String		sDecResult;
+		sDecResult = CryptoDB.decode(sEncData);
+		System.out.println("Decode Result: " + sDecResult);
+	}
+}

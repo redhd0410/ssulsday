@@ -1,0 +1,75 @@
+package kr.ssulsday.cms.controller;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.cubex.comm.vo.SearchPageVO;
+import kr.cubex.data.BaseResult;
+import kr.cubex.data.ResultData;
+import kr.cubex.utils.ComStr;
+
+import kr.ssulsday.cms.service.UserInfoService;
+import kr.ssulsday.cms.service.LoginService;
+import kr.ssulsday.cms.vo.UserInfoVO;
+import kr.ssulsday.cms.vo.LoginVO;
+
+
+@Controller
+public class LoginController {
+	private static final Logger 	logger = LoggerFactory.getLogger(LoginController.class);
+
+	@Resource
+	private LoginService loginService;
+	
+	@Resource
+	private UserInfoService userInfoService;
+	
+	@Autowired
+	private	MessageSource messageSource;
+	
+
+	@RequestMapping("/logout.do")
+	public String logoutForm(HttpServletRequest request) throws Exception {
+		logger.info(">>>>> REQ-URI: " + request.getServletPath());
+	
+		return "redirect:/admin/login.do";
+	}
+
+	@RequestMapping(value="/login_action.do", method=RequestMethod.POST)
+	@ResponseBody BaseResult loginAction(@RequestBody LoginVO dataVO, HttpServletRequest request) throws Exception {
+		logger.info(">>>>> REQ-URI: " + request.getServletPath());
+		logger.info("LoginController::loginAction() - login_id : " + dataVO.getLogin_id() + " login_pwd : " + dataVO.getLogin_pwd());
+
+		ResultData		resVO = null;
+		UserInfoVO		userVO	= loginService.selectUserLogin(dataVO);
+
+		if (userVO == null) {
+			resVO = ResultData.create(BaseResult.ERR_ID_NOT_FOUND, messageSource);
+		}
+		else {
+			resVO = ResultData.create(BaseResult.RET_OK);
+		}
+		logger.info(request.getServletPath() + " ==> retCode : " + resVO.getRetCode());
+
+		if (resVO.isRetOK()) {
+			logger.info("user_id : " + userVO.getUser_id());
+			logger.info("user_name : " + userVO.getUsername());
+		}
+
+		return resVO;
+	}
+}
+	

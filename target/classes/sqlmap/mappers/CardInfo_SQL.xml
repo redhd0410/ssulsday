@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.ssulsday.cms.mapper.CardInfoMapper">
+
+   <insert id="insertData" parameterType="searchVO">
+      <![CDATA[
+      INSERT INTO TBL_CARD_INFO(POST_ID,USER_ID,CARD_TITLE,CARD_CONTENT,CATEGORY_ID,LATITUDE,LONGITUDE)
+      VALUES ((SELECT post_id FROM TBL_POST_INFO ORDER BY post_id DESC LIMIT 1), #{user_id}, #{card_title}, #{card_content}
+      ,#{category_id}, #{latitude}, #{longitude})
+      ]]>
+   </insert>
+
+   <update id="updateData" parameterType="cardInfoVO">
+      UPDATE TBL_CARD_INFO SET 
+      CARD_TITLE=#{card_title},
+      CARD_CONTENT=#{card_content}
+      <!-- ,LATITUDE=#{card_title},
+      LONGITUDE=#{card_content} -->
+      WHERE TBL_CARD_INFO.POST_ID=#{post_id}
+   </update>
+   
+   <update id="updateViewCount" parameterType="cardInfoVO">
+      UPDATE TBL_CARD_INFO SET 
+      VIEWCOUNT=#{viewcount} + 1
+      WHERE TBL_CARD_INFO.POST_ID=#{post_id}
+   </update>
+   
+   <update id="updateCount">
+      UPDATE TBL_CARD_INFO SET 
+      <choose>
+      	<when test='flag.equals("L")'>
+      		likecount = #{count}
+      	</when>
+      	<when test='flag.equals("C")'>
+      		commentcount = #{count}
+      	</when>
+      </choose>
+      WHERE TBL_CARD_INFO.POST_ID=#{post_id}
+   </update>
+
+	<select id="selectListData" parameterType="searchVO"
+      resultType="cardInfoVO">
+      SELECT POST_ID, CARD_TITLE, CARD_CONTENT, TIME_CREATED, TBL_USER_INFO.USER_ID, CATEGORY_ID, LATITUDE, LONGITUDE, VIEWCOUNT, LIKECOUNT, COMMENTCOUNT, USERNAME
+      FROM TBL_CARD_INFO LEFT JOIN TBL_USER_INFO
+      ON TBL_CARD_INFO.user_id = TBL_USER_INFO.user_id
+      WHERE
+      1=1
+         <if test="searchKeyword != ''">
+         AND   CARD_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+         </if> 
+         <if test="searchCondition2 != ''">
+         AND   CATEGORY_ID = #{searchCondition2}
+         </if>
+      ORDER BY 
+      	 <choose>
+      	 	<when test="searchCondition == '' or searchCondition == 'isNew'">
+      	 		TIME_CREATED DESC
+      	 	</when>
+      	 	<when test="searchCondition == 'isLike'">
+      	 		LIKECOUNT DESC
+      	 	</when>
+      	 	<when test="searchCondition == 'isView'">
+      	 		VIEWCOUNT DESC
+      	 	</when>
+      	 	<when test="searchCondition == 'isComment'">
+      	 		COMMENTCOUNT DESC
+      	 	</when>
+      	 </choose>
+   </select>
+   
+   <select id="selectListDataByRange" resultType="cardInfoVO">
+   	  <![CDATA[
+      SELECT POST_ID, CARD_TITLE, CARD_CONTENT, TIME_CREATED, TBL_USER_INFO.USER_ID, CATEGORY_ID, LATITUDE, LONGITUDE, VIEWCOUNT, LIKECOUNT, COMMENTCOUNT, USERNAME, 
+      distance_between(latitude, longitude, #{latitude}, #{longitude}) AS distance
+      FROM TBL_CARD_INFO LEFT JOIN TBL_USER_INFO
+	  ON TBL_CARD_INFO.user_id = TBL_USER_INFO.user_id
+      HAVING distance <= 1
+      ]]>
+   </select>
+
+   <select id="selectListCount" parameterType="searchVO"
+      resultType="int">
+      SELECT COUNT(*) AS TOTCNT 
+      FROM TBL_CARD_INFO
+      WHERE
+      1=1
+      <if test="searchKeyword != ''">
+         AND CARD_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+      </if>
+   </select>
+   
+   <select id="selectData" resultType="cardInfoVO">
+      SELECT POST_ID, CARD_TITLE, CARD_CONTENT, TIME_CREATED, TBL_USER_INFO.USER_ID, CATEGORY_ID, LATITUDE, LONGITUDE, VIEWCOUNT, LIKECOUNT, COMMENTCOUNT, USERNAME
+	  FROM TBL_CARD_INFO LEFT JOIN TBL_USER_INFO
+	  ON TBL_CARD_INFO.user_id = TBL_USER_INFO.user_id
+      WHERE TBL_CARD_INFO.POST_ID= #{post_id}
+      LIMIT 1
+   </select>
+
+
+</mapper>

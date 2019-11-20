@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	<typeAliases>
+	    <typeAlias alias="egovMap"          type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias alias="userInfoVO"       type="kr.ssulsday.cms.vo.UserInfoVO"/>
+		<typeAlias alias="searchVO"			type="kr.cubex.comm.vo.SearchPageVO"/>
+		<typeAlias alias="postInfoVO"		type="kr.ssulsday.cms.vo.PostInfoVO"/>
+		<typeAlias alias="likeInfoVO"		type="kr.ssulsday.cms.vo.LikeInfoVO"/>
+		<typeAlias alias="commentInfoVO"	type="kr.ssulsday.cms.vo.CommentInfoVO"/>
+		<typeAlias alias="hashtagInfoVO"	type="kr.ssulsday.cms.vo.HashtagInfoVO"/>
+		<typeAlias alias="cardInfoVO"		type="kr.ssulsday.cms.vo.CardInfoVO"/>
+		<typeAlias alias="loginVO"		type="kr.ssulsday.cms.vo.LoginVO"/>
+	</typeAliases>
+</configuration>

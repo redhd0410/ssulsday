@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ssulsday.cms.mapper.LikeInfoMapper">
+
+	<select id="selectListData" parameterType="searchVO"
+		resultType="likeInfoVO">
+		SELECT *
+		FROM TBL_LIKE_INFO
+	</select>
+	
+	<select id="selectDataCount" parameterType="likeInfoVO"
+		resultType="int">
+		SELECT COUNT(*) AS TOTCNT FROM TBL_LIKE_INFO
+		WHERE TBL_LIKE_INFO.POST_ID= #{post_id}
+	</select>
+
+	<select id="selectListCount" parameterType="searchVO"
+		resultType="int">
+		SELECT COUNT(*) AS TOTCNT FROM TBL_LIKE_INFO
+	</select>
+	
+	<select id="selectData" parameterType="likeInfoVO" resultType="likeInfoVO">
+		SELECT *
+		FROM TBL_LIKE_INFO
+		WHERE TBL_LIKE_INFO.POST_ID= #{post_id}
+		LIMIT 1
+	</select>
+	
+	<insert id="insertData">
+		<![CDATA[
+		INSERT INTO TBL_LIKE_INFO 
+		(
+			user_id, post_id
+		)
+		VALUES (
+			#{user_id}
+			, #{post_id}
+		)
+		]]>
+	</insert>
+	
+	<delete id="deleteData" parameterType="likeInfoVO">
+		DELETE FROM TBL_LIKE_INFO
+		WHERE user_id = #{user_id} and post_id =#{post_id} 
+	</delete>
+	
+</mapper>

@@ -1,0 +1,81 @@
+/*
+ * Copyright 2008-2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package kr.cubex.comm.vo;
+
+import java.util.ArrayList;
+
+
+public class SearchPageExVO extends SearchPageVO {
+	//
+	private String		cust_id;
+	private String		start_date;
+	private String		end_date;
+
+	private String		cpn_name;
+	private String		item_type;
+    
+    /** 다중값 검색*/
+    private ArrayList<String> searchArray;
+
+	public String getCust_id() {
+		return cust_id;
+	}
+
+	public void setCust_id(String cust_id) {
+		this.cust_id = cust_id;
+	}
+
+	public String getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(String start_date) {
+		this.start_date = start_date;
+	}
+
+	public String getEnd_date() {
+		return end_date;
+	}
+
+	public void setEnd_date(String end_date) {
+		this.end_date = end_date;
+	}
+
+	public String getCpn_name() {
+		return cpn_name;
+	}
+
+	public void setCpn_name(String cpn_name) {
+		this.cpn_name = cpn_name;
+	}
+
+	public String getItem_type() {
+		return item_type;
+	}
+
+	public void setItem_type(String item_type) {
+		this.item_type = item_type;
+	}
+	
+
+	public ArrayList<String> getSearchArray() {
+		return searchArray;
+	}
+
+	public void setSearchArray(ArrayList<String> searchArray) {
+		this.searchArray = searchArray;
+	}
+}

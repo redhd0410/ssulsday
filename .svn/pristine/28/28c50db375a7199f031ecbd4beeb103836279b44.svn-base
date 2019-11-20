@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.ssulsday.cms.mapper.CardInfoMapper">
+
+   <insert id="insertData" parameterType="searchVO">
+      <![CDATA[
+      INSERT INTO TBL_CARD_INFO(POST_ID,USER_ID,CARD_TITLE,CARD_CONTENT,LATITUDE,LONGITUDE)
+      VALUES ((SELECT post_id FROM TBL_POST_INFO ORDER BY post_id DESC LIMIT 1), #{user_id}, #{card_title}, #{card_content}
+      ,#{latitude}, #{longitude})
+      ]]>
+   </insert>
+
+   <update id="updateData" parameterType="cardInfoVO">
+      UPDATE TBL_CARD_INFO SET 
+      CARD_TITLE=#{card_title},
+      CARD_CONTENT=#{card_content}
+      <!-- ,LATITUDE=#{card_title},
+      LONGITUDE=#{card_content} -->
+      WHERE TBL_CARD_INFO.POST_ID=#{post_id}
+   </update>
+   
+   <update id="updateViewCount" parameterType="cardInfoVO">
+      UPDATE TBL_CARD_INFO SET 
+      VIEWCOUNT=#{viewcount}
+      <!-- ,LATITUDE=#{card_title},
+      LONGITUDE=#{card_content} -->
+      WHERE TBL_CARD_INFO.POST_ID=#{post_id}
+   </update>
+
+   <select id="selectListData" parameterType="searchVO"
+      resultType="cardInfoVO">
+      SELECT * 
+      FROM TBL_POST_INFO
+      WHERE
+      1=1
+         <if test="searchKeyword != ''">
+         AND   POST_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+         </if> 
+      ORDER BY TIME_CREATED DESC
+   </select>
+
+   <select id="selectListCount" parameterType="searchVO"
+      resultType="int">
+      SELECT COUNT(*) AS TOTCNT 
+      FROM TBL_CARD_INFO
+      WHERE
+      1=1
+      <if test="searchKeyword != ''">
+         AND CARD_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+      </if>
+   </select>
+   
+   <select id="selectData" parameterType="cardInfoVO" resultType="cardInfoVO">
+      SELECT POST_ID,CARD_TITLE, CARD_CONTENT, TIME_CREATED, LATITUDE, LONGITUDE, VIEWCOUNT, LIKECOUNT
+      FROM TBL_CARD_INFO
+      WHERE TBL_CARD_INFO.POST_ID= #{post_id}
+      LIMIT 1
+   </select>
+
+
+</mapper>

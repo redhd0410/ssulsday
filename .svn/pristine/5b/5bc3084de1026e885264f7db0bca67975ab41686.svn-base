@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ssulsday.cms.mapper.CommentInfoMapper">
+
+	<select id="selectListData" parameterType="searchVO"
+		resultType="commentInfoVO">
+		SELECT *
+		FROM TBL_COMMENT_INFO
+		WHERE TBL_COMMENT_INFO.POST_ID= #{post_id}
+	</select>
+
+	<select id="selectListCount" parameterType="searchVO"
+		resultType="int">
+		SELECT COUNT(*) AS TOTCNT FROM TBL_COMMENT_INFO
+		WHERE TBL_COMMENT_INFO.POST_ID= #{post_id}
+	</select>
+	
+	<select id="selectData" parameterType="commentInfoVO" resultType="commentInfoVO">
+		SELECT *
+		FROM TBL_COMMENT_INFO
+		WHERE TBL_COMMENT_INFO.COMMENT_ID= #{comment_id} 
+		LIMIT 1
+	</select>
+	
+	<insert id="insertData">
+		<![CDATA[
+		INSERT INTO TBL_COMMENT_INFO 
+		(
+			post_id, user_id, comment_content
+		)
+		VALUES (
+			 #{post_id}
+			, #{user_id}
+			, #{comment_content} 
+		)
+		]]>
+	</insert>
+	
+	<update id="updateData" parameterType="commentInfoVO">
+		UPDATE TBL_COMMENT_INFO
+		SET COMMENT_CONTENT = #{comment_content}
+		WHERE COMMENT_ID=#{comment_id} AND TBL_COMMENT_INFO.USER_ID = #{user_id}
+	</update>
+
+	<delete id="deleteData" parameterType="commentInfoVO">
+		DELETE FROM TBL_COMMENT_INFO
+		WHERE COMMENT_ID = #{comment_id} AND TBL_COMMENT_INFO.USER_ID=#{user_id} 
+	</delete>
+	
+</mapper>

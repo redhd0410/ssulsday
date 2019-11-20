@@ -1,0 +1,15 @@
+package kr.cubex.data;
+
+public class JspResult {
+	//
+	public static final String	ATTR_RESULT				= "result";
+	public static final String	ATTR_LIST				= "list";
+	//
+	public static final String	ATTR_CODE_LIST			= "codeList";
+	public static final String	ATTR_CODE_DATA			= "codeData";
+
+	public static final String	ATTR_SEARCH_PAGE		= "searchPage";
+	public static final String	ATTR_PAGING_INFO		= "pagingInfo";
+	//
+	public static final String	ATTR_RESULT_LIST		= "resultList";
+}

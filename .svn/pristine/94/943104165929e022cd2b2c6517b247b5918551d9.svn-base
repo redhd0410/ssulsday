@@ -1,0 +1,56 @@
+package kr.cubex.comm.web;
+
+import java.util.List;
+
+
+public interface CmBaseService<T, SCH> {
+
+	/**
+	 * 데이터를 등록한다.
+	 * @param vo - 등록할 정보가 담긴 VO
+	 * @return 등록 결과
+	 * @exception Exception
+	 */
+	void insertData(T vo) throws Exception;
+
+	/**
+	 * 데이터를 수정한다.
+	 * @param vo - 수정할 정보가 담긴 VO
+	 * @return int - 수정된 건수
+	 * @exception Exception
+	 */
+	int updateData(T vo) throws Exception;
+
+	/**
+	 * 데이터를 삭제한다.
+	 * @param vo - 삭제할 정보가 담긴 VO
+	 * @return int - 삭제된 건수
+	 * @exception Exception
+	 */
+	int deleteData(T vo) throws Exception;
+
+	/**
+	 * 데이터를 조회한다.
+	 * @param vo - 조회할 정보가 담긴 VO
+	 * @return 조회한 글
+	 * @exception Exception
+	 */
+	T selectData(T vo) throws Exception;
+
+	/**
+	 * 데이터 목록을 조회한다.
+	 * @param searchVO - 조회할 정보가 담긴 VO
+	 * @return 데이터 목록
+	 * @exception Exception
+	 */
+	List<?> selectListData(SCH searchVO) throws Exception;
+
+	/**
+	 * 데이터 총 갯수를 조회한다.
+	 * @param searchVO - 조회할 정보가 담긴 VO
+	 * @return 데이터 갯수
+	 * @exception
+	 */
+	int selectListCount(SCH searchVO) throws Exception;
+
+}
