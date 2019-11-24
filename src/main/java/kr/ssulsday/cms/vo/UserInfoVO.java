@@ -6,6 +6,8 @@ public class UserInfoVO {
 	private String	user_id;
 	private String	user_pwd;
 	private String 	username;
+	private int is_active;
+	private String authkey;
 
 	public String getUser_id() {
 		return user_id;
@@ -24,5 +26,17 @@ public class UserInfoVO {
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public int getIs_active() {
+		return is_active;
+	}
+	public void setIs_active(int is_active) {
+		this.is_active = is_active;
+	}
+	public String getAuthkey() {
+		return authkey;
+	}
+	public void setAuthkey(String authkey) {
+		this.authkey = authkey;
 	}
 }

@@ -14,4 +14,5 @@ public interface UserInfoService extends CmBaseService<UserInfoVO, SearchPageVO>
      */
 	PagingListVO selectListPage(SearchPageVO vo) throws Exception;
 	UserInfoVO selectData(String user_id) throws Exception;
+	void updateAuthStatus(UserInfoVO uservo) throws Exception;
 }

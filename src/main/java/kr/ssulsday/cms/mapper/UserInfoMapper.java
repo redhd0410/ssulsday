@@ -15,5 +15,7 @@ public interface UserInfoMapper extends CmBaseMapper<UserInfoVO, SearchPageVO> {
 	int selectListCount(SearchPageVO schVO);
 
 	UserInfoVO selectData(String user_id);
+	
+	void updateAuthStatus(UserInfoVO uservo);
 
 }

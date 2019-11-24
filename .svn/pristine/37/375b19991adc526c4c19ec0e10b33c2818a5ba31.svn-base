@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ssulsday.cms.mapper.UserInfoMapper">
+<sql id="fieldSelect">
+		TBL_USER_INFO.USER_ID
+		, USER_PASSWORD
+		, USERNAME
+	</sql>
+	<select id="selectListData" parameterType="searchVO" resultType="userInfoVO">
+
+		SELECT *
+		FROM 
+			TBL_USER_INFO
+	</select>
+	<select id="selectListCount" parameterType="searchVO" resultType="int">
+		SELECT 
+			COUNT(*) AS TOTCNT
+		FROM 
+			TBL_USER_INFO
+
+	</select>
+	<select id="selectData" parameterType="userInfoVO" resultType="userInfoVO">
+		SELECT *
+		FROM 
+			TBL_USER_INFO
+		WHERE 
+			TBL_USER_INFO.USER_ID			= #{user_id}
+		LIMIT 1
+	</select>
+	<insert id="insertData">
+		<![CDATA[
+		INSERT INTO TBL_USER_INFO 
+		(
+			USER_ID
+			, USER_PASSWORD
+			, USERNAME
+			, AUTHKEY
+		)
+		VALUES (
+			#{user_id}
+			, #{user_pwd}
+			, #{username}
+			, #{authkey}
+		)
+		]]>
+	</insert>
+	
+	<update id="updateData" parameterType="userInfoVO">
+		UPDATE TBL_USER_INFO
+		SET 
+		    <if test="user_pwd != ''">
+		      USER_PASSWORD	= #{user_pwd}
+		    </if>
+		    , USERNAME		= #{username}
+		WHERE 
+			USER_ID			= #{user_id}
+	</update>
+	
+	<update id="updateAuthStatus" parameterType="userInfoVO">
+		UPDATE TBL_USER_INFO
+		SET 
+		<if test="authkey != ''">
+			AUTHKEY		= #{authkey}
+		</if>
+		<if test="is_active != null">
+			, IS_ACTIVE 	= #{is_active}
+		</if>
+		WHERE 
+			USER_ID			= #{user_id}
+	</update>
+
+	<delete id="deleteData" parameterType="userInfoVO">
+		DELETE FROM TBL_USER_INFO
+		WHERE 
+			USER_ID			= #{user_id}
+	</delete>
+</mapper>

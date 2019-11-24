@@ -18,7 +18,11 @@ package kr.ssulsday.cms.service.impl;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -27,6 +31,7 @@ import kr.cubex.comm.vo.SearchPageVO;
 import kr.ssulsday.cms.mapper.UserInfoMapper;
 import kr.ssulsday.cms.service.UserInfoService;
 import kr.ssulsday.cms.vo.UserInfoVO;
+import kr.ssulsday.comm.web.TempKey;
 
 
 
@@ -39,13 +44,18 @@ public class UserInfoServiceImpl extends EgovAbstractServiceImpl implements User
 	private UserInfoMapper userInfoMapper;
 
 	@Override
-	public void insertData(UserInfoVO vo) throws Exception {
+	public void insertData(UserInfoVO vo) throws Exception {		
 		userInfoMapper.insertData(vo);
 	}
 
 	@Override
 	public int updateData(UserInfoVO vo) throws Exception {
 		return userInfoMapper.updateData(vo);
+	}
+	
+	@Override
+	public void updateAuthStatus(UserInfoVO uservo) throws Exception {
+		userInfoMapper.updateAuthStatus(uservo);
 	}
 
 	@Override

@@ -8,8 +8,7 @@
 	</sql>
 	<select id="selectListData" parameterType="searchVO" resultType="userInfoVO">
 
-		SELECT 
-			<include refid="fieldSelect"/>
+		SELECT *
 		FROM 
 			TBL_USER_INFO
 	</select>
@@ -21,10 +20,7 @@
 
 	</select>
 	<select id="selectData" parameterType="userInfoVO" resultType="userInfoVO">
-		SELECT 
-		TBL_USER_INFO.USER_ID
-		, USER_PASSWORD
-		, USERNAME
+		SELECT *
 		FROM 
 			TBL_USER_INFO
 		WHERE 
@@ -38,11 +34,13 @@
 			USER_ID
 			, USER_PASSWORD
 			, USERNAME
+			, AUTHKEY
 		)
 		VALUES (
 			#{user_id}
 			, #{user_pwd}
 			, #{username}
+			, #{authkey}
 		)
 		]]>
 	</insert>
@@ -54,6 +52,19 @@
 		      USER_PASSWORD	= #{user_pwd}
 		    </if>
 		    , USERNAME		= #{username}
+		WHERE 
+			USER_ID			= #{user_id}
+	</update>
+	
+	<update id="updateAuthStatus" parameterType="userInfoVO">
+		UPDATE TBL_USER_INFO
+		SET 
+		<if test="authkey != ''">
+			AUTHKEY		= #{authkey}
+		</if>
+		<if test="is_active != null">
+			, IS_ACTIVE 	= #{is_active}
+		</if>
 		WHERE 
 			USER_ID			= #{user_id}
 	</update>

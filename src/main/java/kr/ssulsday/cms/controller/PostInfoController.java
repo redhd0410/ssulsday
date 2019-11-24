@@ -188,6 +188,7 @@ public class PostInfoController {
 				}
 				cardvo.setLongitude(vo.getLongitude());
 				cardvo.setLatitude(vo.getLatitude());
+				cardvo.setCategory_id(vo.getCategory_id());
 				cardvo.setPost_id(vo.getPost_id());
 				cardInfoService.updateData(cardvo);
 				nRetCode = ResultData.RET_OK;

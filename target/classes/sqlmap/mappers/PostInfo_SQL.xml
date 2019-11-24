@@ -16,6 +16,9 @@
       UPDATE TBL_POST_INFO SET 
       POST_TITLE=#{post_title},
       POST_CONTENT=#{post_content}, 
+      CATEGORY_ID=#{category_id},
+      LATITUDE=#{latitude},
+      LONGITUDE=#{longitude},
       TIME_CREATED=CURRENT_TIMESTAMP
       WHERE POST_ID=#{post_id} AND TBL_POST_INFO.USER_ID = #{user_id}
    </update>
