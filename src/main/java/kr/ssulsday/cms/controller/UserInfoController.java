@@ -66,10 +66,11 @@ public class UserInfoController {
 	/**
 	 * 처리 내용 : 행사단체 수정 페이지로 이동 처리 및 정보 표시
 	 */
-	@RequestMapping(value = "/view.do/{user_id}",method = RequestMethod.GET)
+	@RequestMapping(value = "/view.do",method = RequestMethod.GET)
 	public @ResponseBody UserInfoVO
-	userViewForm(@ModelAttribute("searchVO") SearchPageVO searchVO, @PathVariable String user_id, ModelMap model, HttpServletRequest request) throws Exception {
+	userViewForm(@RequestParam String user_id, ModelMap model, HttpServletRequest request) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
+		
 //		BaseSessInfo 	info	= SessionUtility.getLoginForAdmin(request);
 //		
 //		if (info == null) {
