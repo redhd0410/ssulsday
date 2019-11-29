@@ -8,6 +8,15 @@
 		FROM TBL_LIKE_INFO
 	</select>
 	
+	<select id="selectUserLiked" parameterType="searchVO" resultType="int">
+		SELECT COUNT(*) AS TOTCNT
+		FROM TBL_LIKE_INFO
+		WHERE 
+		TBL_LIKE_INFO.POST_ID = #{searchCondition2} 
+		AND
+		TBL_LIKE_INFO.USER_ID = #{searchKeyword} 
+	</select>
+	
 	<select id="selectDataCount" parameterType="likeInfoVO"
 		resultType="int">
 		SELECT COUNT(*) AS TOTCNT FROM TBL_LIKE_INFO
@@ -17,6 +26,9 @@
 	<select id="selectListCount" parameterType="searchVO"
 		resultType="int">
 		SELECT COUNT(*) AS TOTCNT FROM TBL_LIKE_INFO
+		WHERE TBL_LIKE_INFO.POST_ID = #{searchCondition2} 
+		AND 
+		TBL_LIKE_INFO.USER_ID = #{searchKeyword} 
 	</select>
 	
 	<select id="selectData" parameterType="likeInfoVO" resultType="likeInfoVO">
