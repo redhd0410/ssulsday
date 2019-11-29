@@ -49,7 +49,7 @@ public class LoginController {
 	BaseResult logoutForm(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		 Object obj = session.getAttribute("login");
-		 ResultData resVO = null;
+		 ResultData resVO = ResultData.create(BaseResult.ERR_LOGIN_FAILED);
 	        if ( obj !=null ){
 	            UserInfoVO vo = (UserInfoVO)obj;
 	            // null이 아닐 경우 제거
@@ -71,6 +71,7 @@ public class LoginController {
 	        		resVO = ResultData.create(BaseResult.RET_OK);
 	            }
 	        }
+	        
 		
 		return resVO;
 	}
@@ -80,8 +81,8 @@ public class LoginController {
 	BaseResult loginAction(HttpSession session, @RequestBody LoginVO dataVO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
-		logger.info("LoginController::loginAction() - login_id : " + dataVO.getLogin_id() + " login_pwd : "
-				+ dataVO.getLogin_pwd());
+		logger.info("LoginController::loginAction() - login_id : " + dataVO.getUser_id() + " login_pwd : "
+				+ dataVO.getUser_pwd());
 
 		if (session.getAttribute("login") != null) {
 			session.removeAttribute("login");

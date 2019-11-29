@@ -30,6 +30,7 @@ import kr.cubex.utils.DbUtils;
 import kr.ssulsday.cms.service.ActivityInfoService;
 import kr.ssulsday.cms.service.HashtagInfoService;
 import kr.ssulsday.cms.service.UserInfoService;
+import kr.ssulsday.cms.vo.ActivityInfoVO;
 import kr.ssulsday.cms.vo.CardInfoVO;
 import kr.ssulsday.cms.vo.HashtagInfoVO;
 import kr.ssulsday.cms.vo.UserInfoVO;
@@ -126,5 +127,15 @@ public class ActivityInfoController {
 		return listVO.getItems();
 		
 	}
-	
+	@RequestMapping(value="/mycount.do",method = RequestMethod.GET)
+	public @ResponseBody ActivityInfoVO
+	myListCount(@RequestBody SearchPageVO searchVO, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		logger.info(">>>>> REQ-URI: " + request.getServletPath());
+		
+		ActivityInfoVO activityVO = new ActivityInfoVO();
+		activityVO.setmyLikecount(activityinfoService.selectlikeListCount(searchVO));
+		activityVO.setmyCommentcount(activityinfoService.selectcommentListCount(searchVO));
+		activityVO.setmyPostcount(activityinfoService.selectcontentListCount(searchVO));
+		return activityVO;
+	}
 }

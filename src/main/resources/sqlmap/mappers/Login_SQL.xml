@@ -8,7 +8,7 @@
 		FROM 
 			TBL_USER_INFO
 		WHERE
-			USER_ID = #{login_id}
+			USER_ID = #{user_id}
 	</select>
  <update id="keepLogin">
         update TBL_USER_INFO set sessionKey = #{sessionId}, sessionLimit = #{next} where USER_ID=#{user_id}

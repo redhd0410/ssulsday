@@ -4,21 +4,22 @@ import kr.cubex.comm.vo.BaseDataVO;
 
 public class LoginVO extends BaseDataVO {
 	
-	private String login_id;
-	private String login_pwd;
+	private String user_id;
+	private String user_pwd;
 	private boolean isCookie;
 	
-	public String getLogin_id() {
-		return login_id;
+	
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setLogin_id(String login_id) {
-		this.login_id = login_id;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
-	public String getLogin_pwd() {
-		return login_pwd;
+	public String getUser_pwd() {
+		return user_pwd;
 	}
-	public void setLogin_pwd(String login_pwd) {
-		this.login_pwd = login_pwd;
+	public void setUser_pwd(String user_pwd) {
+		this.user_pwd = user_pwd;
 	}
 	public boolean getisUseCookie() {
 		return isCookie;

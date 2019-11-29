@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ssulsday.cms.mapper.LoginMapper">
+
+	<select id="selectUserLogin" parameterType="loginVO" resultType="userInfoVO">
+		SELECT
+			*
+		FROM 
+			TBL_USER_INFO
+		WHERE
+			USER_ID = #{user_id}
+	</select>
+ <update id="keepLogin">
+        update TBL_USER_INFO set sessionKey = #{sessionId}, sessionLimit = #{next} where USER_ID=#{user_id}
+    </update>
+     
+    <select id="checkUserWithSessionKey" resultType="userInfoVO">
+        select * from  TBL_USER_INFO where sessionKey = #{sessionId} and sessionLimit > now()
+    </select>
+    
+</mapper>
