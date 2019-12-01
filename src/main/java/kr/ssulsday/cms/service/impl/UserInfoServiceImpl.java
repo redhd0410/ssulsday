@@ -93,4 +93,8 @@ public class UserInfoServiceImpl extends EgovAbstractServiceImpl implements User
 		
 		return lstPageData;
 	}
+
+	public String selectpwdData(String user_id) throws Exception {
+		return userInfoMapper.selectpwdData(user_id);
+	}
 }

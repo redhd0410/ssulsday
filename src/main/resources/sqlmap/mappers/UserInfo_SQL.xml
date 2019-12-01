@@ -19,6 +19,14 @@
 			TBL_USER_INFO
 
 	</select>
+	<select id="selectpwdData" parameterType="userInfoVO" resultType="String">
+		SELECT USER_PASSWORD
+		FROM 
+			TBL_USER_INFO
+		WHERE 
+			TBL_USER_INFO.USER_ID			= #{user_id}
+		LIMIT 1
+	</select>
 	<select id="selectData" parameterType="userInfoVO" resultType="userInfoVO">
 		SELECT *
 		FROM 
@@ -48,12 +56,18 @@
 	<update id="updateData" parameterType="userInfoVO">
 		UPDATE TBL_USER_INFO
 		SET 
-		    <if test="user_pwd != ''">
-		      USER_PASSWORD	= #{user_pwd}
+		    <if test="user_pwd != null and username == null">
+		      USER_PASSWORD	= #{user_new_pwd}
 		    </if>
-		    , USERNAME		= #{username}
+		    <if test="username != null and user_pwd == null">
+		      USERNAME		= #{username}
+		    </if>
+		    <if test="username != null and user_pwd != null">
+		    	USER_PASSWORD	= #{user_new_pwd}, 
+		    	USERNAME		= #{username}
+		    </if>
 		WHERE 
-			USER_ID			= #{user_id}
+			USER_ID			= #{user_id} 
 	</update>
 	
 	<update id="updateAuthStatus" parameterType="userInfoVO">

@@ -42,14 +42,18 @@
 	<!--해시태그 검색 -->
 	<select id="selectListData" parameterType="searchVO"
 		resultType="cardInfoVO">
-		SELECT *
-		FROM TBL_CARD_INFO LEFT JOIN TBL_HASHTAG_INFO ON TBL_CARD_INFO.post_id =
-		TBL_HASHTAG_INFO.post_id
+		SELECT 
+		TBL_CARD_INFO.post_id, TBL_CARD_INFO.card_title,TBL_CARD_INFO.user_id, TBL_USER_INFO.username, TBL_CARD_INFO.card_content,TBL_CARD_INFO.longitude,TBL_CARD_INFO.latitude,TBL_CARD_INFO.time_created,TBL_CARD_INFO.viewcount,TBL_CARD_INFO.viewcount
+		FROM TBL_CARD_INFO 
+		LEFT JOIN TBL_HASHTAG_INFO ON TBL_CARD_INFO.post_id =TBL_HASHTAG_INFO.post_id
+		LEFT JOIN TBL_USER_INFO ON TBL_CARD_INFO.user_id = TBL_USER_INFO.user_id
 		WHERE
 		1=1
 		<if test="searchKeyword != ''">
 			AND TBL_HASHTAG_INFO.hashtag LIKE CONCAT('%', #{searchKeyword}, '%')
+			OR TBL_CARD_INFO.card_title LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
+		GROUP BY TBL_CARD_INFO.post_id
 		ORDER BY TBL_CARD_INFO.TIME_CREATED DESC
 	</select>
 

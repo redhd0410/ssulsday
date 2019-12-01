@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.cubex.comm.vo.PagingListVO;
@@ -53,7 +54,7 @@ public class ActivityInfoController {
 	/**
 	 * 처리 내용 : 내가 쓴글 리스트
 	 */
-	@RequestMapping(value="/mycontentlist.do",method = RequestMethod.GET)
+	@RequestMapping(value="/mycontentlist.do",method = RequestMethod.POST)
 	public @ResponseBody List<?> 
 	myContentListForm(@RequestBody SearchPageVO searchVO, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
@@ -76,7 +77,7 @@ public class ActivityInfoController {
 	/**
 	 * 처리 내용 : 내 댓글이 존재하는 글의 리스트
 	 */
-	@RequestMapping(value = "/mycommentlist.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/mycommentlist.do", method = RequestMethod.POST)
 	public @ResponseBody List<?>  
 	myCommentListForm(@RequestBody SearchPageVO searchVO, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
@@ -103,7 +104,7 @@ public class ActivityInfoController {
 	/**
 	 * 처리 내용 : 내 댓글이 존재하는 글의 리스트
 	 */
-	@RequestMapping(value = "/mylikelist.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/mylikelist.do", method = RequestMethod.POST)
 	public @ResponseBody List<?> 
 	myLikeListForm(@RequestBody SearchPageVO searchVO, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
@@ -129,13 +130,22 @@ public class ActivityInfoController {
 	}
 	@RequestMapping(value="/mycount.do",method = RequestMethod.GET)
 	public @ResponseBody ActivityInfoVO
-	myListCount(@RequestBody SearchPageVO searchVO, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	myListCount(@RequestParam String user_id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		
 		ActivityInfoVO activityVO = new ActivityInfoVO();
-		activityVO.setmyLikecount(activityinfoService.selectlikeListCount(searchVO));
-		activityVO.setmyCommentcount(activityinfoService.selectcommentListCount(searchVO));
-		activityVO.setmyPostcount(activityinfoService.selectcontentListCount(searchVO));
+		SearchPageVO searchVO = new SearchPageVO();
+		searchVO.setSearchKeyword(user_id);
+		if (user_id.equals("")) {
+			activityVO.setmyCommentcount(0);
+			activityVO.setmyLikecount(0);
+			activityVO.setmyPostcount(0);
+		}
+		else {
+			activityVO.setmyLikecount(activityinfoService.selectlikeListCount(searchVO));
+			activityVO.setmyCommentcount(activityinfoService.selectcommentListCount(searchVO));
+			activityVO.setmyPostcount(activityinfoService.selectcontentListCount(searchVO));
+		}
 		return activityVO;
 	}
 }

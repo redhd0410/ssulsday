@@ -1,5 +1,7 @@
 package kr.ssulsday.cms.controller;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +58,9 @@ public class HashtagInfoController {
 			HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		
-		searchVO.setSearchKeyword(searchKeyword);
+		String searchDecoded = URLDecoder.decode(searchKeyword, "EUC-KR");
+		
+		searchVO.setSearchKeyword(searchDecoded);
 
 		PagingListVO listVO = HashtagInfoService.selectListPage(searchVO);
 

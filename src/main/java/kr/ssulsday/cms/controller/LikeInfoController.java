@@ -79,7 +79,7 @@ public class LikeInfoController {
 		return ResultData.create(nRetCode, messageSource);
 	}
 	
-	@RequestMapping(value="/view.do", method = RequestMethod.GET)
+	@RequestMapping(value="/view.do", method = RequestMethod.POST)
 	@ResponseBody BaseResult viewAction(@RequestBody SearchPageVO searchVO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception{
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());

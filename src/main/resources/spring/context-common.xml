@@ -48,6 +48,7 @@
 	<bean id="antPathMater" class="org.springframework.util.AntPathMatcher" />
 	<bean id="defaultTraceHandler" class="egovframework.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" />
 	<!--수정한 부분-->
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />  
 	<bean id="passwordEncoder" class="egovframework.rte.fdl.cryptography.EgovPasswordEncoder">
 		<property name="algorithm" value="SHA-256" /><!-- default : SHA-256 -->
 		<property name="hashedPassword" value="GNis5G/XoiY7SezUvUelys7xXpHc67ydbMNbI7YdLKg=" />

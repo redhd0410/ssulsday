@@ -18,4 +18,6 @@ public interface UserInfoMapper extends CmBaseMapper<UserInfoVO, SearchPageVO> {
 	
 	void updateAuthStatus(UserInfoVO uservo);
 
+	String selectpwdData(String user_id);
+
 }

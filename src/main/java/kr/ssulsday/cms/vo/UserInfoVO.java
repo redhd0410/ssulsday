@@ -5,10 +5,11 @@ public class UserInfoVO {
 
 	private String	user_id;
 	private String	user_pwd;
+	private String 	user_new_pwd;
 	private String 	username;
 	private int is_active;
 	private String authkey;
-
+	
 	public String getUser_id() {
 		return user_id;
 	}
@@ -20,6 +21,12 @@ public class UserInfoVO {
 	}
 	public void setUser_pwd(String user_pwd) {
 		this.user_pwd = user_pwd;
+	}
+	public String getUser_new_pwd() {
+		return user_new_pwd;
+	}
+	public void setUser_new_pwd(String user_new_pwd) {
+		this.user_new_pwd = user_new_pwd;
 	}
 	public String getUsername() {
 		return username;
