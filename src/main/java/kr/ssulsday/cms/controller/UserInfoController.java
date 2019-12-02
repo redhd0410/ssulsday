@@ -108,7 +108,7 @@ public class UserInfoController {
 			messageHelper.setText(new StringBuffer().append("<h1>[이메일 인증]</h1>")
 					.append("<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>")
 					.append("<a href='http://15.164.218.21:8080/cms/user/join.do?email=").append(userVO.getUser_id())
-					.append("&authkey=").append(authkey).append("' target='_blenk'>이메일 인증 확인</a>").toString());
+					.append("&authkey=").append(authkey).append("' target='_blank'>이메일 인증 확인</a>").toString());
 
 			mailSender.send(message);
 
