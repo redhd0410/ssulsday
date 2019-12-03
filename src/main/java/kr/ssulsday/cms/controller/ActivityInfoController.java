@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import kr.cubex.comm.vo.PagingListVO;
 import kr.cubex.comm.vo.SearchPageVO;
 import kr.cubex.data.BaseResult;
@@ -54,9 +57,10 @@ public class ActivityInfoController {
 	/**
 	 * 처리 내용 : 내가 쓴글 리스트
 	 */
+	@ApiOperation(value="내가 쓴 게시글", nickname="내가 쓴 게시글")
 	@RequestMapping(value="/mycontentlist.do",method = RequestMethod.POST)
 	public @ResponseBody List<?> 
-	myContentListForm(@RequestBody SearchPageVO searchVO, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	myContentListForm(@RequestBody SearchPageVO searchVO, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		
 		PagingListVO	listVO = activityinfoService.selectcontentListPage(searchVO);
@@ -77,9 +81,10 @@ public class ActivityInfoController {
 	/**
 	 * 처리 내용 : 내 댓글이 존재하는 글의 리스트
 	 */
+	@ApiOperation(value="내가 댓글 단 게시글", nickname="내가 댓글 단 게시글")
 	@RequestMapping(value = "/mycommentlist.do", method = RequestMethod.POST)
 	public @ResponseBody List<?>  
-	myCommentListForm(@RequestBody SearchPageVO searchVO, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	myCommentListForm(@RequestBody SearchPageVO searchVO, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		
 		PagingListVO	listVO = activityinfoService.selectcommentListPage(searchVO);
@@ -93,10 +98,6 @@ public class ActivityInfoController {
 			}
 			vo.setHashtags(hashtagList);
 		}
-		
-		model.addAttribute(PagingListVO.ATTR_RESULT_LIST, 	listVO.getItems());
-		model.addAttribute(SearchPageVO.ATTR_SEARCH_PAGE, 	listVO.getSearchPage());
-		model.addAttribute(SearchPageVO.ATTR_PAGING_INFO, 	listVO.getPagingInfo());
 
 		return listVO.getItems();
 		
@@ -104,9 +105,10 @@ public class ActivityInfoController {
 	/**
 	 * 처리 내용 : 내 댓글이 존재하는 글의 리스트
 	 */
+	@ApiOperation(value="내가 좋아요 누른 게시글", nickname="내가 좋아요 누른 게시글")
 	@RequestMapping(value = "/mylikelist.do", method = RequestMethod.POST)
 	public @ResponseBody List<?> 
-	myLikeListForm(@RequestBody SearchPageVO searchVO, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	myLikeListForm(@RequestBody SearchPageVO searchVO, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		
 		PagingListVO	listVO = activityinfoService.selectlikeListPage(searchVO);
@@ -120,14 +122,15 @@ public class ActivityInfoController {
 			}
 			vo.setHashtags(hashtagList);
 		}
-		
-		model.addAttribute(PagingListVO.ATTR_RESULT_LIST, 	listVO.getItems());
-		model.addAttribute(SearchPageVO.ATTR_SEARCH_PAGE, 	listVO.getSearchPage());
-		model.addAttribute(SearchPageVO.ATTR_PAGING_INFO, 	listVO.getPagingInfo());
 
 		return listVO.getItems();
 		
 	}
+	
+	@ApiOperation(value="전체 수", nickname="전체 수")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "user_id", value = "사용자 ID", required = true, dataType = "string", paramType = "query")
+	})
 	@RequestMapping(value="/mycount.do",method = RequestMethod.GET)
 	public @ResponseBody ActivityInfoVO
 	myListCount(@RequestParam String user_id, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {

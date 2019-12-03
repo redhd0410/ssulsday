@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import kr.cubex.comm.vo.PagingListVO;
 import kr.cubex.comm.vo.SearchPageVO;
 import kr.cubex.data.BaseResult;
@@ -56,9 +59,10 @@ public class UserInfoController {
 	/**
 	 * 처리 내용 : 관리자 리스트를 화면에 출력
 	 */
+	@ApiOperation(value="사용자 리스트 조회", nickname="사용자 리스트 조회")
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-	public @ResponseBody List<?> userListForm(@ModelAttribute("searchVO") SearchPageVO searchVO, ModelMap model,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public @ResponseBody List<?> userListForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		SearchPageVO searchVO = new SearchPageVO();
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		PagingListVO listVO = userinfoService.selectListPage(searchVO);
 
@@ -69,9 +73,13 @@ public class UserInfoController {
 	/*	*//**
 			 * 처리 내용 : 행사단체 수정 페이지로 이동 처리 및 정보 표시
 			 */
+	
+	@ApiOperation(value="사용자 조회", nickname="사용자 조회")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "user_id", value = "유저 ID", required = true, dataType = "string", paramType = "query"),
+	})
 	@RequestMapping(value = "/view.do", method = RequestMethod.GET)
-	public @ResponseBody UserInfoVO userViewForm(@RequestParam String user_id, ModelMap model,
-			HttpServletRequest request) throws Exception {
+	public @ResponseBody UserInfoVO userViewForm(@RequestParam String user_id, HttpServletRequest request) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 
 //		BaseSessInfo 	info	= SessionUtility.getLoginForAdmin(request);
@@ -87,6 +95,7 @@ public class UserInfoController {
 	/**
 	 * 처리 내용 : 관리자 등록 정보에 대한 데이터 처리
 	 */
+	@ApiOperation(value="사용자 등록", nickname="사용자 등록")
 	@RequestMapping(value = "/reg_action.do", method = RequestMethod.POST)
 	public @ResponseBody BaseResult userRegAction(@RequestBody UserInfoVO userVO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -153,9 +162,7 @@ public class UserInfoController {
 		return resVO;
 	}
 
-	/**
-	 * 처리 내용 : 관리자 수정 정보에 대한 데이터 처리
-	 */
+	@ApiOperation(value="사용자 수정", nickname="사용자 수정")
 	@RequestMapping(value = "/edit_action.do", method = RequestMethod.PUT)
 	public @ResponseBody BaseResult userEditAction(@RequestBody UserInfoVO userVO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -185,6 +192,7 @@ public class UserInfoController {
 		return ResultData.create(nRetCode);
 	}
 
+	@ApiOperation(value="사용자 삭제", nickname="사용자 삭제")
 	@RequestMapping(value = "/del_action.do", method = RequestMethod.DELETE)
 	public @ResponseBody BaseResult userDelAction(@RequestBody UserInfoVO userVO, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

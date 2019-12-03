@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import kr.cubex.comm.vo.PagingListVO;
 import kr.cubex.comm.vo.SearchPageVO;
 import kr.cubex.data.BaseResult;
@@ -45,6 +48,10 @@ public class CommentInfoController {
 	@Autowired
 	private MessageSource messageSource;
 
+	@ApiOperation(value="게시글의 댓글 리스트", nickname="게시글의 댓글 리스트")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "post_id", value = "게시글 ID", required = true, dataType = "integer", paramType = "path")
+	})
 	@RequestMapping(value="/list.do/{post_id}", method=RequestMethod.GET)
 	public @ResponseBody List<?> 
 	commentListForm(@PathVariable int post_id, @ModelAttribute("searchVO") SearchPageVO searchVO, ModelMap model,
@@ -60,6 +67,7 @@ public class CommentInfoController {
 
 	}
 
+	@ApiOperation(value="게시글의 댓글 등록", nickname="게시글의 댓글 등록")
 	@RequestMapping(value = "/reg_action.do",method = RequestMethod.POST)
 	public @ResponseBody BaseResult commentCreateAction(@RequestBody CommentInfoVO commentvo, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -85,6 +93,7 @@ public class CommentInfoController {
 		return resVO;
 	}
 
+	@ApiOperation(value="게시글의 댓글 수정", nickname="게시글의 댓글 수정")
 	@RequestMapping(value="/edit_action.do",method = RequestMethod.PUT)
 	public @ResponseBody BaseResult commentEditAction(@RequestBody CommentInfoVO commentvo, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -102,6 +111,7 @@ public class CommentInfoController {
 		return ResultData.create(nRetCode);
 	}
 
+	@ApiOperation(value="게시글의 댓글 삭제", nickname="게시글의 댓글 삭제")
 	@RequestMapping(value="/del_action.do",method = RequestMethod.DELETE)
 	public @ResponseBody BaseResult commentDelAction(@RequestBody CommentInfoVO commentvo, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

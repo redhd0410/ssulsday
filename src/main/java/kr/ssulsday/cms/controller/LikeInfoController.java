@@ -1,5 +1,7 @@
 package kr.ssulsday.cms.controller;
 
+import java.net.URLDecoder;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,8 +17,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import kr.cubex.comm.vo.PagingListVO;
 import kr.cubex.comm.vo.SearchPageVO;
 import kr.cubex.data.BaseResult;
@@ -45,6 +51,8 @@ public class LikeInfoController {
 	
 	@Autowired
 	private	MessageSource messageSource;
+	
+	@ApiOperation(value="좋아요 등록", nickname="좋아요 등록")
 	@RequestMapping(value = "/reg_action.do",method = RequestMethod.POST)
 	@ResponseBody BaseResult likeCreateAction(@RequestBody LikeInfoVO likevo, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -67,6 +75,7 @@ public class LikeInfoController {
 		return resVO;
 	}
 
+	@ApiOperation(value="좋아요 삭제", nickname="좋아요 삭제")
 	@RequestMapping(value="/del_action.do",method = RequestMethod.DELETE)
 	@ResponseBody BaseResult likeDelAction(@RequestBody LikeInfoVO likevo, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -79,10 +88,19 @@ public class LikeInfoController {
 		return ResultData.create(nRetCode, messageSource);
 	}
 	
-	@RequestMapping(value="/view.do", method = RequestMethod.POST)
-	@ResponseBody BaseResult viewAction(@RequestBody SearchPageVO searchVO, HttpServletRequest request,
+	@ApiOperation(value="좋아요 조회", nickname="좋아요 조회")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "user_id", value = "사용자 ID", required = true, dataType = "string", paramType = "query")
+	})
+	@RequestMapping(value="/view.do", method = RequestMethod.GET)
+	@ResponseBody BaseResult viewAction(@RequestParam String user_id, HttpServletRequest request,
 			HttpServletResponse response) throws Exception{
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
+		
+		String searchDecoded = URLDecoder.decode(user_id, "EUC-KR");
+		
+		SearchPageVO searchVO = new SearchPageVO();
+		searchVO.setSearchKeyword(searchDecoded);
 		
 		int nRetCode = ResultData.ERR_NO_DATA;
 		

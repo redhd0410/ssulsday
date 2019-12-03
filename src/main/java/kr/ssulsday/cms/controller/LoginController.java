@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
+import io.swagger.annotations.ApiOperation;
 import kr.cubex.comm.vo.SearchPageVO;
 import kr.cubex.data.BaseResult;
 import kr.cubex.data.ResultData;
@@ -48,6 +49,7 @@ public class LoginController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
+	@ApiOperation(value="로그아웃", nickname="로그아웃")
 	@RequestMapping(value = "/logout.do", method = RequestMethod.GET)
 	@ResponseBody
 	BaseResult logoutForm(HttpServletRequest request, HttpSession session, HttpServletResponse response)
@@ -80,6 +82,7 @@ public class LoginController {
 		return resVO;
 	}
 
+	@ApiOperation(value="로그인", nickname="로그인")
 	@RequestMapping(value = "/login_action.do", method = RequestMethod.POST)
 	@ResponseBody
 	BaseResult loginAction(HttpSession session, @RequestBody LoginVO dataVO, HttpServletRequest request,

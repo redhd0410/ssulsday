@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import kr.cubex.comm.vo.PagingListVO;
 import kr.cubex.comm.vo.SearchPageVO;
 import kr.cubex.data.BaseResult;
@@ -82,10 +85,13 @@ public class PostInfoController {
 
 	}
 
+	@ApiOperation(value="게시글 상세페이지 조회", nickname="게시글 상세페이지 조회")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "post_id", value = "게시글 ID", required = true, dataType = "integer", paramType = "path"),
+	})
 	@RequestMapping(value="/view.do/{post_id}", method=RequestMethod.GET)
 	public @ResponseBody PostInfoVO 
-	postViewForm(@ModelAttribute("searchVO") SearchPageVO searchVO, @PathVariable int post_id,
-			ModelMap model, HttpServletRequest request) throws Exception {
+	postViewForm(@PathVariable int post_id, HttpServletRequest request) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		PostInfoVO postVO = PostInfoService.selectData(post_id);
 		CardInfoVO cardvo = new CardInfoVO();
@@ -105,6 +111,7 @@ public class PostInfoController {
 		return postVO;
 	}
 
+	@ApiOperation(value="게시글 등록", nickname="게시글 등록")
 	@RequestMapping(value = "/reg_action.do",method = RequestMethod.POST)
 	public @ResponseBody BaseResult 
 	postCreateAction(@RequestBody PostInfoVO postvo, HttpServletRequest request,
@@ -156,6 +163,7 @@ public class PostInfoController {
 		return resVO;
 	}
 
+	@ApiOperation(value="게시글 수정", nickname="게시글 수정")
 	@RequestMapping(value="/edit_action.do",method = RequestMethod.PUT)
 	public @ResponseBody BaseResult 
 	postEditAction(@RequestBody PostInfoVO vo, HttpServletRequest request,
@@ -200,6 +208,7 @@ public class PostInfoController {
 	      return ResultData.create(nRetCode);
 	}
 
+	@ApiOperation(value="게시글 삭제", nickname="게시글 삭제")
 	@RequestMapping(value="/del_action.do",method = RequestMethod.DELETE)
 	public @ResponseBody BaseResult 
 	postDelAction(@RequestBody PostInfoVO postvo, HttpServletRequest request,

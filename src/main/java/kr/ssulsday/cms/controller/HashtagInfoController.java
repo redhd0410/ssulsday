@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import kr.cubex.comm.vo.PagingListVO;
 import kr.cubex.comm.vo.SearchPageVO;
 import kr.cubex.data.BaseResult;
@@ -52,13 +55,17 @@ public class HashtagInfoController {
 
 	private final ReentrantLock locker = new ReentrantLock();
 
+	@ApiOperation(value="검색", nickname="검색")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "searchKeyword", value = "검색 키워드", required = false, dataType = "integer", paramType = "path")
+	})
 	@RequestMapping(value = { "/list.do/{searchKeyword}"}, method = RequestMethod.GET)
-	public @ResponseBody List<?> postListForm(@ModelAttribute SearchPageVO searchVO,
-			@PathVariable String searchKeyword, ModelMap model, HttpServletRequest request,
+	public @ResponseBody List<?> postListForm(@PathVariable String searchKeyword, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		
 		String searchDecoded = URLDecoder.decode(searchKeyword, "EUC-KR");
+		SearchPageVO searchVO = new SearchPageVO();
 		
 		searchVO.setSearchKeyword(searchDecoded);
 

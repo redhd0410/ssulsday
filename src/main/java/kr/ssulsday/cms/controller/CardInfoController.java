@@ -22,7 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import kr.cubex.comm.vo.PagingListVO;
 import kr.cubex.comm.vo.SearchPageVO;
 import kr.cubex.data.BaseResult;
@@ -35,7 +39,7 @@ import kr.ssulsday.cms.vo.HashtagInfoVO;
 import kr.ssulsday.cms.vo.PostInfoVO;
 
 
-@Controller
+@RestController
 @RequestMapping(value = "/cms/card")
 public class CardInfoController {
 
@@ -48,13 +52,19 @@ public class CardInfoController {
 	@Autowired
 	private MessageSource messageSource;
 
+	@ApiOperation(value="전체 카드 리스트 조회", nickname="전체 카드 리스트 조회")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "category_id", value = "카테고리", required = false, dataType = "integer", paramType = "query"),
+		@ApiImplicitParam(name = "searchCondition", value = "정렬 기준", required = false, dataType = "string", paramType = "query")
+	})
 	@RequestMapping(value = "list.do", method=RequestMethod.GET)
 	public @ResponseBody List<?>  
 	CardListForm(@RequestParam Optional<String> searchCondition, @RequestParam Optional<Integer> category_id, 
-			@ModelAttribute("searchVO") SearchPageVO searchVO, ModelMap model,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
-
+		
+		SearchPageVO searchVO = new SearchPageVO();
+		
 		if (searchCondition.isPresent()) {
 			searchVO.setSearchCondition(searchCondition.get());
 		}
@@ -78,10 +88,14 @@ public class CardInfoController {
 
 	}
 	
+	@ApiOperation(value="반경에 있는 카드 조회", nickname="반경에 있는 카드 조회")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "latitude", value = "위도", required = true, dataType = "number", paramType = "query"),
+		@ApiImplicitParam(name = "longitude", value = "경도", required = true, dataType = "number", paramType = "query")
+	})
 	@RequestMapping(value = "/range.do", method=RequestMethod.GET)
 	public @ResponseBody List<?>  
-	CardListFormByRange(@RequestParam double latitude, @RequestParam double longitude, @ModelAttribute("searchVO") SearchPageVO searchVO, ModelMap model,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	CardListFormByRange(@RequestParam double latitude, @RequestParam double longitude, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: " + request.getServletPath());
 		
 		List<CardInfoVO> listVO = (List<CardInfoVO>) CardInfoService.selectListDataByRange(latitude, longitude);

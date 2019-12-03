@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import kr.cubex.comm.vo.PagingListVO;
 import kr.cubex.comm.vo.SearchPageVO;
 import kr.cubex.data.BaseResult;
@@ -35,6 +38,7 @@ public class MailSenderController {
 	@Autowired
 	private JavaMailSender mailSender;
 	
+	@ApiOperation(value="문의 메일", nickname="문의 메일")
 	@RequestMapping(value="/send_action.do", method=RequestMethod.POST)
 	public @ResponseBody BaseResult sendAction(@RequestBody MailVO mail, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info(">>>>> REQ-URI: POST " + request.getServletPath());
